@@ -253,19 +253,15 @@
     .gbn-logo.in { opacity: 1; }
 
     .gbn-logo-mark {
-        font-family: 'Orbitron', sans-serif;
-        font-weight: 900;
-        font-size: 1.8rem;
-        letter-spacing: 8px;
-        color: var(--text);
-        text-shadow: 0 0 18px var(--cyan-dim);
+        width: 190px;
+        height: auto;
+        filter: drop-shadow(0 0 14px rgba(43, 200, 130, 0.45));
     }
-    .gbn-logo-mark span { color: var(--cyan); }
     .gbn-logo-tag {
         font-size: 0.6rem;
         letter-spacing: 4px;
         color: var(--muted);
-        margin-top: 4px;
+        margin-top: 6px;
     }
 
     /* ---------- Main terminal panel ---------- */
@@ -472,6 +468,45 @@
         border: 0;
     }
 
+    .video-frame:fullscreen,
+    .video-frame:-webkit-full-screen {
+        padding-top: 0;
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        background: #000;
+    }
+    .video-frame:fullscreen iframe,
+    .video-frame:-webkit-full-screen iframe {
+        position: static;
+        width: 100%;
+        height: 100%;
+    }
+
+    .btn-fullscreen {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 12px;
+        background: transparent;
+        border: 1px solid var(--cyan);
+        color: var(--cyan);
+        font-family: 'Orbitron', sans-serif;
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 2px;
+        cursor: pointer;
+        transition: color 0.25s ease, background 0.25s ease;
+    }
+    .btn-fullscreen:hover {
+        color: var(--void);
+        background: var(--cyan);
+    }
+    .btn-fullscreen svg { width: 14px; height: 14px; }
+
     .result-desc {
         font-size: 0.92rem;
         line-height: 1.5;
@@ -557,7 +592,23 @@
 
     <!-- Logo pinned above the main terminal -->
     <div class="gbn-logo" id="gbnLogo">
-        <div class="gbn-logo-mark">G<span>B</span>N</div>
+        <svg class="gbn-logo-mark" viewBox="0 0 400 190" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <linearGradient id="gbnGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stop-color="#8fe8c0"/>
+                    <stop offset="55%" stop-color="#2bb37a"/>
+                    <stop offset="100%" stop-color="#0f6b47"/>
+                </linearGradient>
+            </defs>
+            <!-- top-left chevron diamond -->
+            <polygon points="15,70 95,15 175,70 95,55" fill="url(#gbnGrad)"/>
+            <!-- bottom-left solid diamond -->
+            <polygon points="15,85 95,130 15,175" fill="url(#gbnGrad)"/>
+            <!-- wordmark GBN, italic slanted blocks -->
+            <text x="205" y="112" font-family="Orbitron, sans-serif" font-weight="900"
+                  font-size="92" font-style="italic" fill="url(#gbnGrad)"
+                  transform="skewX(-8)">GBN</text>
+        </svg>
         <div class="gbn-logo-tag">GUNPLA BATTLE NEXUS ONLINE</div>
     </div>
 
@@ -592,6 +643,12 @@
             <div class="result" id="resultBox">
                 <div class="result-eyebrow">DỮ LIỆU ĐÃ GIẢI MÃ</div>
                 <div class="result-name" id="resName">--</div>
+                <button type="button" class="btn-fullscreen" id="btnVideoFullscreen">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M8 3H5a2 2 0 0 0-2 2v3M16 3h3a2 2 0 0 1 2 2v3M8 21H5a2 2 0 0 1-2-2v-3M16 21h3a2 2 0 0 0 2-2v-3"/>
+                    </svg>
+                    XEM TOÀN MÀN HÌNH
+                </button>
                 <div class="video-frame" id="videoFrame">
                     <iframe id="videoIframe" src="" title="Trận chiến Gundam" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 </div>
@@ -703,6 +760,16 @@
     const resName = document.getElementById('resName');
     const resDesc = document.getElementById('resDesc');
     const videoIframe = document.getElementById('videoIframe');
+    const videoFrame = document.getElementById('videoFrame');
+    const btnVideoFullscreen = document.getElementById('btnVideoFullscreen');
+
+    btnVideoFullscreen.addEventListener('click', () => {
+        const el = videoFrame;
+        const req = el.requestFullscreen || el.webkitRequestFullscreen || el.msRequestFullscreen;
+        if (req) {
+            req.call(el).catch(() => { /* ignore if denied */ });
+        }
+    });
 
     input.addEventListener('input', (e) => {
         e.target.value = e.target.value.toUpperCase();
