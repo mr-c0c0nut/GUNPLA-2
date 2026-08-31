@@ -4,18 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GBN - Gunpla Battle Nexus Online</title>
-    <!-- Fonts -->
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --primary: #00ffaa;
-            --primary-glow: rgba(0, 255, 170, 0.4);
-            --bg-dark: #040910;
+            --primary: #2bf0a5;
+            --primary-glow: rgba(43, 240, 165, 0.4);
+            --bg-dark: #030814;
             --card-bg: rgba(6, 18, 28, 0.85);
-            --border-color: rgba(0, 255, 170, 0.4);
+            --border-color: rgba(43, 240, 165, 0.4);
             --text-dim: #7a9bb0;
         }
 
@@ -38,18 +38,28 @@
             color: #fff;
         }
 
-        /* Nền Grid Sci-Fi */
+        /* Nền không gian vũ trụ & Lưới 3D */
+        .space-bg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 50% 30%, rgba(13, 71, 57, 0.4) 0%, transparent 60%),
+                radial-gradient(ellipse at center, #0a1826 0%, #02060d 100%);
+            z-index: 1;
+        }
+
         .bg-grid {
             position: absolute;
             width: 200%;
             height: 200%;
             background-image: 
-                linear-gradient(rgba(0, 255, 170, 0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 255, 170, 0.05) 1px, transparent 1px);
+                linear-gradient(rgba(43, 240, 165, 0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(43, 240, 165, 0.04) 1px, transparent 1px);
             background-size: 50px 50px;
             transform: perspective(500px) rotateX(60deg) translateY(-100px);
             animation: gridMove 20s linear infinite;
-            z-index: 1;
+            z-index: 2;
         }
 
         @keyframes gridMove {
@@ -59,11 +69,11 @@
 
         .glow-core {
             position: absolute;
-            width: 450px;
-            height: 450px;
+            width: 500px;
+            height: 500px;
             background: radial-gradient(circle, var(--primary-glow) 0%, transparent 70%);
-            z-index: 2;
-            filter: blur(50px);
+            z-index: 3;
+            filter: blur(60px);
             opacity: 0.5;
         }
 
@@ -72,42 +82,36 @@
             position: relative;
             z-index: 10;
             width: 100%;
-            max-width: 420px;
-            height: 480px;
+            max-width: 440px;
+            min-height: 480px;
             margin: 20px;
             perspective: 1000px;
         }
 
-        /* CỔNG TÁCH 2 BÊN (GATE SPLIT ANIMATION) */
+        /* HIỆU ỨNG CỔNG TÁCH 2 BÊN (SPLIT GATE) */
         .gate-door {
             position: absolute;
             top: 0;
             width: 50%;
             height: 100%;
-            background: rgba(10, 25, 35, 0.95);
+            background: rgba(8, 20, 30, 0.95);
             border: 1px solid var(--border-color);
-            backdrop-filter: blur(15px);
+            backdrop-filter: blur(20px);
             z-index: 20;
             transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
         }
 
         .gate-left {
             left: 0;
             border-right: 1px solid var(--primary);
-            clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
         }
 
         .gate-right {
             right: 0;
             border-left: 1px solid var(--primary);
-            clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
         }
 
-        /* Màn hình Loading nằm trên 2 cánh cửa */
+        /* MÀN HÌNH LOADING TRÊN CỔNG */
         .loading-overlay {
             position: absolute;
             z-index: 30;
@@ -122,7 +126,7 @@
 
         .loader-title {
             font-family: 'Orbitron', sans-serif;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             letter-spacing: 4px;
             color: var(--primary);
             margin-bottom: 15px;
@@ -130,13 +134,12 @@
         }
 
         .progress-bar-box {
-            width: 200px;
+            width: 220px;
             height: 4px;
             background: rgba(255, 255, 255, 0.1);
             border-radius: 2px;
             overflow: hidden;
-            position: relative;
-            border: 1px solid rgba(0, 255, 170, 0.3);
+            border: 1px solid rgba(43, 240, 165, 0.3);
         }
 
         .progress-fill {
@@ -155,7 +158,7 @@
             letter-spacing: 2px;
         }
 
-        /* KHI LOADING XONG: KÍCH HOẠT MỞ CỬA 2 BÊN */
+        /* KHI MỞ CỬA */
         .hud-wrapper.opened .gate-left {
             transform: translateX(-100%);
             opacity: 0;
@@ -173,16 +176,15 @@
 
         /* GIAO DIỆN BÊN TRONG (HUD CONTENT) */
         .hud-content {
-            position: absolute;
-            top: 0;
-            left: 0;
+            position: relative;
+            z-index: 15;
             width: 100%;
             height: 100%;
             padding: 40px 30px;
             background: var(--card-bg);
-            backdrop-filter: blur(20px);
+            backdrop-filter: blur(25px);
             border: 1px solid var(--border-color);
-            box-shadow: 0 0 35px rgba(0, 0, 0, 0.8), inset 0 0 15px var(--primary-glow);
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(43, 240, 165, 0.1);
             text-align: center;
             display: flex;
             flex-direction: column;
@@ -219,14 +221,14 @@
         /* Logo GBN */
         .logo-title {
             font-family: 'Orbitron', sans-serif;
-            font-size: 4.2rem;
+            font-size: 3.8rem;
             font-weight: 900;
             font-style: italic;
-            letter-spacing: 2px;
-            background: linear-gradient(180deg, #ffffff 30%, var(--primary) 100%);
+            letter-spacing: 3px;
+            background: linear-gradient(180deg, #ffffff 20%, var(--primary) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 0 12px var(--primary-glow));
+            filter: drop-shadow(0 0 15px var(--primary-glow));
             line-height: 0.9;
         }
 
@@ -234,22 +236,22 @@
             font-family: 'Orbitron', sans-serif;
             font-size: 0.75rem;
             font-weight: 700;
-            letter-spacing: 5px;
+            letter-spacing: 6px;
             color: #fff;
-            margin-top: 8px;
+            margin-top: 10px;
         }
 
         .logo-desc {
             font-size: 0.65rem;
             letter-spacing: 4px;
             color: var(--primary);
-            opacity: 0.8;
-            margin-top: 2px;
+            opacity: 0.9;
+            margin-top: 3px;
         }
 
         /* Form & Input */
         .input-group {
-            margin-top: 15px;
+            margin: 20px 0;
         }
 
         .input-label {
@@ -263,15 +265,15 @@
 
         .hud-input {
             width: 100%;
-            padding: 12px 15px;
+            padding: 14px 15px;
             background: rgba(0, 0, 0, 0.6);
-            border: 1px solid rgba(0, 255, 170, 0.25);
+            border: 1px solid rgba(43, 240, 165, 0.3);
             color: var(--primary);
             font-family: 'Orbitron', monospace;
             font-size: 1.1rem;
             font-weight: 700;
             text-align: center;
-            letter-spacing: 3px;
+            letter-spacing: 4px;
             outline: none;
             transition: all 0.3s ease;
             text-transform: uppercase;
@@ -280,7 +282,7 @@
         .hud-input:focus {
             border-color: var(--primary);
             box-shadow: 0 0 15px var(--primary-glow);
-            background: rgba(0, 15, 10, 0.8);
+            background: rgba(0, 20, 15, 0.8);
         }
 
         .hud-input::placeholder {
@@ -294,8 +296,7 @@
         /* Nút Submit */
         .btn-nexus {
             width: 100%;
-            padding: 14px;
-            margin-top: 15px;
+            padding: 15px;
             background: transparent;
             border: 1px solid var(--primary);
             color: var(--primary);
@@ -323,12 +324,61 @@
         }
 
         .btn-nexus:hover {
-            color: #040910;
+            color: #030814;
             box-shadow: 0 0 20px var(--primary-glow);
         }
 
         .btn-nexus:hover::before {
             left: 0;
+        }
+
+        /* Kết quả sau khi nhập mã thành công */
+        .result-box {
+            display: none;
+            margin-top: 15px;
+            text-align: left;
+            background: rgba(0, 20, 15, 0.6);
+            border: 1px solid var(--primary);
+            padding: 12px;
+            border-radius: 4px;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .result-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.85rem;
+            color: var(--primary);
+            margin-bottom: 4px;
+        }
+
+        .result-desc {
+            font-size: 0.75rem;
+            color: #cbd5e1;
+            margin-bottom: 10px;
+        }
+
+        .btn-video {
+            display: inline-block;
+            width: 100%;
+            padding: 8px;
+            background: var(--primary);
+            color: #030814;
+            text-align: center;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-decoration: none;
+            border-radius: 2px;
+            transition: 0.2s;
+        }
+
+        .btn-video:hover {
+            filter: brightness(1.15);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         /* Footer Status */
@@ -366,6 +416,7 @@
 </head>
 <body>
 
+    <div class="space-bg"></div>
     <div class="bg-grid"></div>
     <div class="glow-core"></div>
 
@@ -373,7 +424,7 @@
         
         <!-- MÀN HÌNH LOADING & CỔNG TÁCH 2 BÊN -->
         <div class="loading-overlay" id="loadingOverlay">
-            <div class="loader-title">INITIALIZING SYSTEM</div>
+            <div class="loader-title">INITIALIZING GBN NEXUS</div>
             <div class="progress-bar-box">
                 <div class="progress-fill" id="progressFill"></div>
             </div>
@@ -383,42 +434,51 @@
         <div class="gate-door gate-left"></div>
         <div class="gate-door gate-right"></div>
 
-        <!-- GIAO DIỆN BÊN TRONG HỆ THỐNG -->
+        <!-- GIAO DIỆN CHÍNH (HUD CONTENT) -->
         <div class="hud-content">
             <div class="hud-corner top-left"></div>
             <div class="hud-corner top-right"></div>
             <div class="hud-corner bottom-left"></div>
             <div class="hud-corner bottom-right"></div>
 
-            <div class="logo-box">
-                <h1 class="logo-title">GBN</h1>
-                <div class="logo-sub">Gunpla Battle</div>
-                <div class="logo-desc">NEXUS ONLINE</div>
-            </div>
-
-            <form id="nexusForm">
-                <div class="input-group">
-                    <label for="codeInput" class="input-label">System Access Code</label>
-                    <input 
-                        type="text" 
-                        id="codeInput" 
-                        class="hud-input" 
-                        placeholder="ENTER CODE..." 
-                        maxlength="16"
-                        autocomplete="off"
-                        required
-                    >
+            <div>
+                <div class="logo-box">
+                    <h1 class="logo-title">GBN</h1>
+                    <div class="logo-sub">GUNPLA BATTLE</div>
+                    <div class="logo-desc">NEXUS ONLINE</div>
                 </div>
 
-                <button type="submit" class="btn-nexus" id="btnSubmit">
-                    CONNECT TO NEXUS
-                </button>
-            </form>
+                <form id="nexusForm">
+                    <div class="input-group">
+                        <label for="codeInput" class="input-label">Nhập Mã Bí Mật (VD: 0001)</label>
+                        <input 
+                            type="text" 
+                            id="codeInput" 
+                            class="hud-input" 
+                            placeholder="ENTER CODE..." 
+                            maxlength="16"
+                            autocomplete="off"
+                            required
+                        >
+                    </div>
+
+                    <button type="submit" class="btn-nexus" id="btnSubmit">
+                        KÍCH HOẠT HỆ THỐNG
+                    </button>
+                </form>
+
+                <!-- Box hiển thị thông tin Gundam khi nhập đúng mã -->
+                <div class="result-box" id="resultBox">
+                    <div class="result-title" id="resName">--</div>
+                    <div class="result-desc" id="resDesc">--</div>
+                    <a href="#" id="resLink" class="btn-video" target="_blank">XEM VIDEO CHIẾN ĐẤU</a>
+                </div>
+            </div>
 
             <div class="sys-status">
-                <span>SYS.VER 2.0.4</span>
+                <span>SYS.VER 2.5.0</span>
                 <div class="status-online">
-                    <span class="dot"></span> SYSTEM READY
+                    <span class="dot"></span> SECURE LINK ACTIVE
                 </div>
             </div>
         </div>
@@ -432,42 +492,73 @@
         const input = document.getElementById('codeInput');
         const form = document.getElementById('nexusForm');
         const btn = document.getElementById('btnSubmit');
+        const resultBox = document.getElementById('resultBox');
+        const resName = document.getElementById('resName');
+        const resDesc = document.getElementById('resDesc');
+        const resLink = document.getElementById('resLink');
 
-        // Logic chạy thanh phần trăm Loading
+        // Hiệu ứng chạy thanh phần trăm Loading khi vừa vào trang
         let progress = 0;
         const interval = setInterval(() => {
-            progress += Math.floor(Math.random() * 8) + 3; // Tang toc ngau nhien
+            progress += Math.floor(Math.random() * 10) + 4;
             if (progress >= 100) {
                 progress = 100;
                 clearInterval(interval);
                 
-                // Cap nhat 100% xong thi kich hoat hieu ung mo cua split gate
+                // Mở cổng tách 2 bên (Split Gate Animation)
                 setTimeout(() => {
                     hudWrapper.classList.add('opened');
-                }, 300);
+                }, 250);
             }
             progressFill.style.width = `${progress}%`;
             loadingText.innerText = `${progress}%`;
-        }, 50);
+        }, 45);
 
-        // Tu dong viet hoa Code khi nhap
+        // Tự động viết hoa mã khi nhập
         input.addEventListener('input', (e) => {
             e.target.value = e.target.value.toUpperCase();
         });
 
-        // Xu ly submit form
-        form.addEventListener('submit', (e) => {
+        // Gửi request xác thực mã bí mật lên app.py
+        form.addEventListener('submit', async (e) => {
             e.preventDefault();
             const code = input.value.trim();
-            if (code) {
-                btn.innerText = "AUTHENTICATING...";
-                btn.style.opacity = "0.7";
-                
-                setTimeout(() => {
-                    alert(`[NEXUS CONNECTED]\nMã truy cập: ${code}\nĐã kết nối thành công vào hệ thống GBN!`);
-                    btn.innerText = "CONNECT TO NEXUS";
-                    btn.style.opacity = "1";
-                }, 1000);
+
+            if (!code) return;
+
+            btn.innerText = "ĐANG XÁC THỰC...";
+            btn.style.opacity = "0.7";
+            resultBox.style.display = "none";
+
+            try {
+                const response = await fetch('/api/verify-code', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ code: code })
+                });
+
+                const result = await response.json();
+
+                if (response.ok && result.status === 'success') {
+                    btn.innerText = "TRUY CẬP THÀNH CÔNG";
+                    btn.style.borderColor = "#2bf0a5";
+                    
+                    // Hiển thị thông tin Gundam ngay trong khung HUD
+                    resName.innerText = `[${result.data.id}] ${result.data.name}`;
+                    resDesc.innerText = result.data.description;
+                    resLink.href = result.data.video_url;
+                    resultBox.style.display = "block";
+                } else {
+                    alert(result.message);
+                    btn.innerText = "KÍCH HOẠT HỆ THỐNG";
+                }
+            } catch (error) {
+                alert("[LỖI KẾT NỐI] Không thể kết nối tới máy chủ Flask!");
+                btn.innerText = "KÍCH HOẠT HỆ THỐNG";
+            } finally {
+                btn.style.opacity = "1";
             }
         });
     </script>
