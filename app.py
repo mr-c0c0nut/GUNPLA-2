@@ -12,9 +12,9 @@ GUNDAM_DATABASE = {
     },
     "0002": {
         "id": "002",
-        "name": "Freedom Gundam",
-        "video_url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ", # Có thể thay bằng link chiến đấu khác
-        "description": "Mobile Suit cao cấp trang bị hệ thống lò phản ứng hạt nhân và dàn vũ khí Full Burst."
+        "name": "Sazabi",
+        "video_url": "https://www.youtube.com/watch?v=342ly4n5Phs", # Có thể thay bằng link chiến đấu khác
+        "description": "SAZABI CON CUA KHỐN NẠN"
     },
     "0003": {
         "id": "003",
