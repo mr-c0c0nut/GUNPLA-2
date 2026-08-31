@@ -13,7 +13,7 @@ GUNDAM_DATABASE = {
     "0002": {
         "id": "002",
         "name": "Sazabi",
-        "video_url": "https://www.youtube.com/watch?v=342ly4n5Phs", # Có thể thay bằng link chiến đấu khác
+        "video_url": "https://www.youtube.com/watch?v=Gc5BBt5wShc", # Có thể thay bằng link chiến đấu khác
         "description": "SAZABI CON CUA KHỐN NẠN"
     },
     "0003": {
