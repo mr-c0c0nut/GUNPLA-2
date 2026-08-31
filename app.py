@@ -10,17 +10,17 @@ GUNDAM_DATABASE = {
         "video_url": "https://www.youtube.com/watch?v=T0x5YcPIdO8",
         "description": "Biểu tượng huyền thoại của kỷ nguyên vũ trụ, sở hữu độ cơ động cao và khả năng chiến đấu toàn diện."
     },
-    "0002": {
+    "0298": {
         "id": "002",
         "name": "Sazabi",
         "video_url": "https://www.youtube.com/watch?v=Gc5BBt5wShc", # Có thể thay bằng link chiến đấu khác
         "description": "SAZABI CON CUA KHỐN NẠN"
     },
-    "0003": {
+    "1983": {
         "id": "003",
-        "name": "Gundam Exia",
-        "video_url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-        "description": "Chuyên gia cận chiến với hệ thống 7 thanh kiếm độc quyền của Celestial Being."
+        "name": "ZAKU II",
+        "video_url": "https://www.youtube.com/watch?v=d4ZeAa3a_Rw",
+        "description": "ZAKU II , những người lính bị dính vào chiến tranh bất đắc dĩ"
     }
 }
 
