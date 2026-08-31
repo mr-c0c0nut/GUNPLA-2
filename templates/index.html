@@ -14,8 +14,8 @@
             --primary: #00ffaa;
             --primary-glow: rgba(0, 255, 170, 0.4);
             --bg-dark: #040910;
-            --card-bg: rgba(6, 18, 28, 0.65);
-            --border-color: rgba(0, 255, 170, 0.3);
+            --card-bg: rgba(6, 18, 28, 0.85);
+            --border-color: rgba(0, 255, 170, 0.4);
             --text-dim: #7a9bb0;
         }
 
@@ -38,7 +38,7 @@
             color: #fff;
         }
 
-        /* Nền vũ trụ tĩnh + Lưới Trọng lực (Grid) */
+        /* Nền Grid Sci-Fi */
         .bg-grid {
             position: absolute;
             width: 200%;
@@ -57,37 +57,151 @@
             100% { transform: perspective(500px) rotateX(60deg) translateY(50px); }
         }
 
-        /* Ambient Light Center */
         .glow-core {
             position: absolute;
-            width: 400px;
-            height: 400px;
+            width: 450px;
+            height: 450px;
             background: radial-gradient(circle, var(--primary-glow) 0%, transparent 70%);
             z-index: 2;
-            filter: blur(40px);
-            opacity: 0.6;
+            filter: blur(50px);
+            opacity: 0.5;
         }
 
-        /* Card HUD trung tâm */
-        .hud-card {
+        /* KHUNG CHÍNH (HUD CONTAINER) */
+        .hud-wrapper {
             position: relative;
             z-index: 10;
             width: 100%;
             max-width: 420px;
-            padding: 45px 35px;
+            height: 480px;
+            margin: 20px;
+            perspective: 1000px;
+        }
+
+        /* CỔNG TÁCH 2 BÊN (GATE SPLIT ANIMATION) */
+        .gate-door {
+            position: absolute;
+            top: 0;
+            width: 50%;
+            height: 100%;
+            background: rgba(10, 25, 35, 0.95);
+            border: 1px solid var(--border-color);
+            backdrop-filter: blur(15px);
+            z-index: 20;
+            transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .gate-left {
+            left: 0;
+            border-right: 1px solid var(--primary);
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+        }
+
+        .gate-right {
+            right: 0;
+            border-left: 1px solid var(--primary);
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+        }
+
+        /* Màn hình Loading nằm trên 2 cánh cửa */
+        .loading-overlay {
+            position: absolute;
+            z-index: 30;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.4s ease;
+        }
+
+        .loader-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            letter-spacing: 4px;
+            color: var(--primary);
+            margin-bottom: 15px;
+            text-shadow: 0 0 10px var(--primary-glow);
+        }
+
+        .progress-bar-box {
+            width: 200px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            overflow: hidden;
+            position: relative;
+            border: 1px solid rgba(0, 255, 170, 0.3);
+        }
+
+        .progress-fill {
+            width: 0%;
+            height: 100%;
+            background: var(--primary);
+            box-shadow: 0 0 10px var(--primary);
+            transition: width 0.1s linear;
+        }
+
+        .loading-text {
+            font-family: 'Orbitron', monospace;
+            font-size: 0.8rem;
+            color: #fff;
+            margin-top: 10px;
+            letter-spacing: 2px;
+        }
+
+        /* KHI LOADING XONG: KÍCH HOẠT MỞ CỬA 2 BÊN */
+        .hud-wrapper.opened .gate-left {
+            transform: translateX(-100%);
+            opacity: 0;
+        }
+
+        .hud-wrapper.opened .gate-right {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+
+        .hud-wrapper.opened .loading-overlay {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* GIAO DIỆN BÊN TRONG (HUD CONTENT) */
+        .hud-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            padding: 40px 30px;
             background: var(--card-bg);
             backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
             border: 1px solid var(--border-color);
-            /* Cắt góc kiểu Sci-Fi */
+            box-shadow: 0 0 35px rgba(0, 0, 0, 0.8), inset 0 0 15px var(--primary-glow);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            opacity: 0;
+            transform: scale(0.9);
+            transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition-delay: 0.3s;
             clip-path: polygon(
                 0 15px, 15px 0, 
                 calc(100% - 15px) 0, 100% 15px, 
                 100% calc(100% - 15px), calc(100% - 15px) 100%, 
                 15px 100%, 0 calc(100% - 15px)
             );
-            box-shadow: 0 0 30px rgba(0, 0, 0, 0.8);
-            text-align: center;
+        }
+
+        .hud-wrapper.opened .hud-content {
+            opacity: 1;
+            transform: scale(1);
         }
 
         /* Trang trí góc HUD */
@@ -102,14 +216,10 @@
         .bottom-left { bottom: 4px; left: 4px; border-right: none; border-top: none; }
         .bottom-right { bottom: 4px; right: 4px; border-left: none; border-top: none; }
 
-        /* Logo GBN Metal & Glow */
-        .logo-box {
-            margin-bottom: 30px;
-        }
-
+        /* Logo GBN */
         .logo-title {
             font-family: 'Orbitron', sans-serif;
-            font-size: 4.5rem;
+            font-size: 4.2rem;
             font-weight: 900;
             font-style: italic;
             letter-spacing: 2px;
@@ -126,39 +236,36 @@
             font-weight: 700;
             letter-spacing: 5px;
             color: #fff;
-            margin-top: 10px;
-            text-transform: uppercase;
+            margin-top: 8px;
         }
 
         .logo-desc {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             letter-spacing: 4px;
             color: var(--primary);
             opacity: 0.8;
-            margin-top: 3px;
+            margin-top: 2px;
         }
 
-        /* Form nhập Code */
+        /* Form & Input */
         .input-group {
-            position: relative;
-            margin-top: 30px;
-            margin-bottom: 25px;
+            margin-top: 15px;
         }
 
         .input-label {
             display: block;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             letter-spacing: 2px;
             color: var(--text-dim);
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             text-transform: uppercase;
         }
 
         .hud-input {
             width: 100%;
-            padding: 14px 18px;
-            background: rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(0, 255, 170, 0.2);
+            padding: 12px 15px;
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(0, 255, 170, 0.25);
             color: var(--primary);
             font-family: 'Orbitron', monospace;
             font-size: 1.1rem;
@@ -173,20 +280,22 @@
         .hud-input:focus {
             border-color: var(--primary);
             box-shadow: 0 0 15px var(--primary-glow);
-            background: rgba(0, 15, 10, 0.7);
+            background: rgba(0, 15, 10, 0.8);
         }
 
         .hud-input::placeholder {
-            color: rgba(255, 255, 255, 0.15);
+            color: rgba(255, 255, 255, 0.2);
             font-weight: 400;
             letter-spacing: 1px;
             font-family: 'Rajdhani', sans-serif;
+            font-size: 0.9rem;
         }
 
-        /* Nút Bấm Login */
+        /* Nút Submit */
         .btn-nexus {
             width: 100%;
-            padding: 15px;
+            padding: 14px;
+            margin-top: 15px;
             background: transparent;
             border: 1px solid var(--primary);
             color: var(--primary);
@@ -222,17 +331,12 @@
             left: 0;
         }
 
-        .btn-nexus:active {
-            transform: scale(0.98);
-        }
-
-        /* Trạng thái System Status */
+        /* Footer Status */
         .sys-status {
             display: flex;
             justify-content: space-between;
-            margin-top: 25px;
-            padding-top: 15px;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding-top: 12px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
             font-size: 0.65rem;
             color: var(--text-dim);
             letter-spacing: 1px;
@@ -262,75 +366,105 @@
 </head>
 <body>
 
-    <!-- Hiệu ứng Nền Grid & Tâm Sáng -->
     <div class="bg-grid"></div>
     <div class="glow-core"></div>
 
-    <!-- HUD Container -->
-    <div class="hud-card">
-        <!-- Chi tiết góc HUD -->
-        <div class="hud-corner top-left"></div>
-        <div class="hud-corner top-right"></div>
-        <div class="hud-corner bottom-left"></div>
-        <div class="hud-corner bottom-right"></div>
-
-        <!-- Header / Logo -->
-        <div class="logo-box">
-            <h1 class="logo-title">GBN</h1>
-            <div class="logo-sub">Gunpla Battle</div>
-            <div class="logo-desc">NEXUS ONLINE</div>
+    <div class="hud-wrapper" id="hudWrapper">
+        
+        <!-- MÀN HÌNH LOADING & CỔNG TÁCH 2 BÊN -->
+        <div class="loading-overlay" id="loadingOverlay">
+            <div class="loader-title">INITIALIZING SYSTEM</div>
+            <div class="progress-bar-box">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="loading-text" id="loadingText">0%</div>
         </div>
 
-        <!-- Form nhập Access Code -->
-        <form id="nexusForm">
-            <div class="input-group">
-                <label for="codeInput" class="input-label">System Access Code</label>
-                <input 
-                    type="text" 
-                    id="codeInput" 
-                    class="hud-input" 
-                    placeholder="ENTER CODE..." 
-                    maxlength="16"
-                    autocomplete="off"
-                    required
-                >
+        <div class="gate-door gate-left"></div>
+        <div class="gate-door gate-right"></div>
+
+        <!-- GIAO DIỆN BÊN TRONG HỆ THỐNG -->
+        <div class="hud-content">
+            <div class="hud-corner top-left"></div>
+            <div class="hud-corner top-right"></div>
+            <div class="hud-corner bottom-left"></div>
+            <div class="hud-corner bottom-right"></div>
+
+            <div class="logo-box">
+                <h1 class="logo-title">GBN</h1>
+                <div class="logo-sub">Gunpla Battle</div>
+                <div class="logo-desc">NEXUS ONLINE</div>
             </div>
 
-            <button type="submit" class="btn-nexus" id="btnSubmit">
-                CONNECT TO NEXUS
-            </button>
-        </form>
+            <form id="nexusForm">
+                <div class="input-group">
+                    <label for="codeInput" class="input-label">System Access Code</label>
+                    <input 
+                        type="text" 
+                        id="codeInput" 
+                        class="hud-input" 
+                        placeholder="ENTER CODE..." 
+                        maxlength="16"
+                        autocomplete="off"
+                        required
+                    >
+                </div>
 
-        <!-- System Footer -->
-        <div class="sys-status">
-            <span>SYS.VER 2.0.4</span>
-            <div class="status-online">
-                <span class="dot"></span> NEXUS LINK ONLINE
+                <button type="submit" class="btn-nexus" id="btnSubmit">
+                    CONNECT TO NEXUS
+                </button>
+            </form>
+
+            <div class="sys-status">
+                <span>SYS.VER 2.0.4</span>
+                <div class="status-online">
+                    <span class="dot"></span> SYSTEM READY
+                </div>
             </div>
         </div>
+
     </div>
 
     <script>
+        const hudWrapper = document.getElementById('hudWrapper');
+        const progressFill = document.getElementById('progressFill');
+        const loadingText = document.getElementById('loadingText');
         const input = document.getElementById('codeInput');
         const form = document.getElementById('nexusForm');
         const btn = document.getElementById('btnSubmit');
 
-        // Tự động viết hoa mã nhập vào
+        // Logic chạy thanh phần trăm Loading
+        let progress = 0;
+        const interval = setInterval(() => {
+            progress += Math.floor(Math.random() * 8) + 3; // Tang toc ngau nhien
+            if (progress >= 100) {
+                progress = 100;
+                clearInterval(interval);
+                
+                // Cap nhat 100% xong thi kich hoat hieu ung mo cua split gate
+                setTimeout(() => {
+                    hudWrapper.classList.add('opened');
+                }, 300);
+            }
+            progressFill.style.width = `${progress}%`;
+            loadingText.innerText = `${progress}%`;
+        }, 50);
+
+        // Tu dong viet hoa Code khi nhap
         input.addEventListener('input', (e) => {
             e.target.value = e.target.value.toUpperCase();
         });
 
-        // Xử lý sự kiện khi ấn kết nối
+        // Xu ly submit form
         form.addEventListener('submit', (e) => {
             e.preventDefault();
             const code = input.value.trim();
-            
             if (code) {
                 btn.innerText = "AUTHENTICATING...";
                 btn.style.opacity = "0.7";
                 
                 setTimeout(() => {
-                    alert(`[NEXUS CONNECTED]\nMã xác thực: ${code}\nĐang chuyển hướng vào hệ thống GBN...`);
+                    alert(`[NEXUS CONNECTED]\nMã truy cập: ${code}\nĐã kết nối thành công vào hệ thống GBN!`);
                     btn.innerText = "CONNECT TO NEXUS";
                     btn.style.opacity = "1";
                 }, 1000);
